@@ -17,3 +17,10 @@ uint select_part(int argc, char *argv[]) {
 		std::exit(1);
 	}
 }
+
+std::vector<uint> read_input_uints() {
+	std::vector<uint> input;
+	for (std::string line; std::getline(std::cin, line); )
+		input.push_back(std::stoul(line));
+	return input;
+}
