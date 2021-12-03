@@ -23,4 +23,20 @@ std::pair<T, T> two_sum(Iter begin, Iter end, T total) {
 
 std::vector<uint> read_input_uints();
 
+template<class T>
+std::vector<T> read_input_objs() {
+	std::vector<T> input;
+	for (std::string line; std::getline(std::cin, line); )
+		input.emplace_back(std::move(line));
+	return input;
+}
+
+template<class T, class Conv>
+std::vector<T> read_input(Conv &&conv) {
+	std::vector<T> input;
+	for (std::string line; std::getline(std::cin, line); )
+		input.push_back(conv(std::move(line)));
+	return input;
+}
+
 #endif /* COMMON_H_ */
