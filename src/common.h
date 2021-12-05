@@ -2,6 +2,7 @@
 #define COMMON_H_
 
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
 #include <tuple>
 #include <unordered_set>
@@ -21,6 +22,28 @@ std::pair<T, T> two_sum(Iter begin, Iter end, T total) {
 	throw std::logic_error{"no match found"};
 }
 
+template<class T>
+std::vector<T> parse_input_space_sep_line(const std::string &line) {
+	std::vector<T> vals;
+	std::stringstream line_stream{line};
+	for (T val; line_stream >> val; )
+		vals.push_back(val);
+	return vals;
+}
+
+template<class T>
+std::vector<T> parse_input_comma_sep_line(const std::string &line) {
+	std::stringstream line_stream{line};
+	std::vector<T> vals;
+	T val;
+	for (std::string str_val; std::getline(line_stream, str_val, ','); ) {
+		if (!(std::stringstream{str_val} >> val))
+			throw std::runtime_error{"parsing error"};
+		vals.push_back(val);
+	}
+	return vals;
+}
+
 std::vector<uint> read_input_uints();
 
 template<class T>
@@ -37,6 +60,13 @@ std::vector<T> read_input(Conv &&conv) {
 	for (std::string line; std::getline(std::cin, line); )
 		input.push_back(conv(std::move(line)));
 	return input;
+}
+
+template<class T>
+std::vector<T> read_input_comma_sep_line() {
+	std::string line;
+	std::getline(std::cin, line);
+	return parse_input_comma_sep_line<T>(line);
 }
 
 #endif /* COMMON_H_ */
