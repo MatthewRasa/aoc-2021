@@ -1,5 +1,6 @@
 CC := g++
-CXXFLAGS := -Wall -Wextra -std=c++20 -pthread
+CXXFLAGS := -Wall -Wextra -std=c++20
+LDFLAGS :=  -pthread -ltbb
 BUILD := release
 
 ifeq ($(BUILD),debug)
@@ -20,7 +21,7 @@ all: $(BLIST)
 
 bin/%: obj/%.o obj/common.o
 	@mkdir -p $(shell dirname $@)
-	$(CC) -o $@ $^
+	$(CC) $(LDFLAGS) -o $@ $^
 
 obj/%.o: src/%.cc
 	@mkdir -p $(shell dirname $@)

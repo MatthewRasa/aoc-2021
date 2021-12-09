@@ -1,10 +1,11 @@
 #include "common.h"
 #include <algorithm>
+#include <execution>
 #include <numeric>
 
 static uint alignment_fuel_constant(const std::vector<int> &crabs) {
-	return std::accumulate(crabs.begin(), crabs.end(), 0u,
-			[align_pos = crabs[crabs.size() / 2]](auto sum, auto crab) { return sum + std::abs(align_pos - crab); });
+	return std::transform_reduce(std::execution::par_unseq, crabs.begin(), crabs.end(), 0u,
+			std::plus{}, [align_pos = crabs[crabs.size() / 2]](auto crab) { return std::abs(align_pos - crab); });
 }
 
 static uint distance_fuel(uint distance) {
@@ -17,8 +18,8 @@ static uint distance_fuel(uint distance) {
 static uint alignment_fuel_linear(const std::vector<int> &crabs) {
 	uint fuel = -1;
 	for (int align_pos = 0; align_pos <= crabs.back(); ++align_pos)
-		fuel = std::min(fuel, std::accumulate(crabs.begin(), crabs.end(), 0u,
-					[align_pos](auto sum, auto crab) { return sum + distance_fuel(std::abs(align_pos - crab)); }));
+		fuel = std::min(fuel, std::transform_reduce(std::execution::par_unseq, crabs.begin(), crabs.end(), 0u,
+					std::plus{}, [align_pos](auto crab) { return distance_fuel(std::abs(align_pos - crab)); }));
 	return fuel;
 }
 
@@ -33,4 +34,5 @@ int main(int argc, char *argv[]) {
 		std::cout << alignment_fuel_linear(std::move(crabs)) << std::endl;
 		break;
 	}
+	return 0;
 }
