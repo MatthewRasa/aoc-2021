@@ -12,6 +12,7 @@ declare -a answers1=(
 	344
 	516
 	318081
+	1700
 )
 declare -a answers2=(
 	1761
@@ -24,6 +25,7 @@ declare -a answers2=(
 	1048410
 	1023660
 	4361305341
+	273
 )
 
 declare -i passed=0
@@ -36,14 +38,15 @@ for day_bin in bin/*; do
 		answer="answers$part[$day_idx]"
 		if [[ "$(./"$day_bin" "$part" < input/"${day}.txt")" == "${!answer}" ]]; then
 			((++passed))
-			echo -n "P"
+			echo -ne "\e[1;32mP\e[0m"
 		else
-			echo -n "F"
+			echo -ne "\e[1;31mF\e[0m"
 		fi
 		((++total))
 	done
 	echo
 done
 
-echo "Passed $passed/$total"
+[[ "$passed" -eq "$total" ]] && i=32 || i=31
+echo -e "\e[1;${i}mPassed $passed/$total\e[0m"
 [[ "$passed" -eq "$total" ]]
