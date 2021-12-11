@@ -16,7 +16,7 @@ public:
 			 : m_rows(LENGTH, std::vector<std::uint8_t>(LENGTH, false)) {
 		m_mapping.reserve(LENGTH * LENGTH);
 		for (std::size_t r = 0; r < LENGTH; ++r) {
-			const auto nums = parse_input_space_sep_line<uint>(rows[r]);
+			const auto nums = parse_input_line_space_delim<uint>(rows[r]);
 			for (std::size_t c = 0; c < LENGTH; ++c)
 				m_mapping.emplace(nums[c], std::make_pair(r, c));
 		}
@@ -94,7 +94,7 @@ static uint losing_board_score(const std::vector<uint> &nums, const std::vector<
 }
 
 int main(int argc, char *argv[]) {
-	const auto nums = read_input_comma_sep_line<uint>();
+	const auto nums = read_input_line_comma_delim<uint>();
 	auto boards = read_boards();
 	switch (select_part(argc, argv)) {
 	case 1:

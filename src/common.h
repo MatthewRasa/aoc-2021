@@ -23,7 +23,26 @@ std::pair<T, T> two_sum(Iter begin, Iter end, T total) {
 }
 
 template<class T>
-std::vector<T> parse_input_space_sep_line(const std::string &line) {
+std::enable_if_t<std::is_integral_v<T>, T> parse_char(char c) {
+	return c - '0';
+}
+
+template<class T>
+std::enable_if_t<!std::is_integral_v<T>, T> parse_char(char c) {
+	return static_cast<T>(c);
+}
+
+template<class T>
+std::vector<T> parse_input_line_no_delim(const std::string &line) {
+	std::vector<T> vals;
+	vals.reserve(line.size());
+	for (auto c : line)
+		vals.push_back(parse_char<T>(c));
+	return vals;
+}
+
+template<class T>
+std::vector<T> parse_input_line_space_delim(const std::string &line) {
 	std::vector<T> vals;
 	std::stringstream line_stream{line};
 	for (T val; line_stream >> val; )
@@ -32,7 +51,7 @@ std::vector<T> parse_input_space_sep_line(const std::string &line) {
 }
 
 template<class T>
-std::vector<T> parse_input_comma_sep_line(const std::string &line) {
+std::vector<T> parse_input_line_comma_delim(const std::string &line) {
 	std::stringstream line_stream{line};
 	std::vector<T> vals;
 	T val;
@@ -63,10 +82,10 @@ std::vector<T> read_input(Conv &&conv) {
 }
 
 template<class T>
-std::vector<T> read_input_comma_sep_line() {
+std::vector<T> read_input_line_comma_delim() {
 	std::string line;
 	std::getline(std::cin, line);
-	return parse_input_comma_sep_line<T>(line);
+	return parse_input_line_comma_delim<T>(line);
 }
 
 #endif /* COMMON_H_ */

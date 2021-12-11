@@ -24,7 +24,7 @@ static uint alignment_fuel_linear(const std::vector<int> &crabs) {
 }
 
 int main(int argc, char *argv[]) {
-	auto crabs = read_input_comma_sep_line<int>();
+	auto crabs = read_input_line_comma_delim<int>();
 	std::sort(crabs.begin(), crabs.end());
 	switch (select_part(argc, argv)) {
 	case 1:

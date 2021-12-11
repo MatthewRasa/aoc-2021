@@ -15,6 +15,6 @@ std::size_t simulate_laternfish(const std::vector<uint> &fish, uint days) {
 }
 
 int main(int argc, char *argv[]) {
-	std::cout << simulate_laternfish(read_input_comma_sep_line<uint>(), select_part(argc, argv) == 1 ? 80 : 256) << std::endl;
+	std::cout << simulate_laternfish(read_input_line_comma_delim<uint>(), select_part(argc, argv) == 1 ? 80 : 256) << std::endl;
 	return 0;
 }
