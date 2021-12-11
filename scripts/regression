@@ -1,0 +1,49 @@
+#!/bin/bash
+cd "$(dirname "$0")/.."
+
+declare -a answers1=(
+	1709
+	1936494
+	3009600
+	69579
+	6267
+	385391
+	353800
+	344
+	516
+	318081
+)
+declare -a answers2=(
+	1761
+	1997106066
+	6940518
+	14877
+	20196
+	1728611055389
+	98119739
+	1048410
+	1023660
+	4361305341
+)
+
+declare -i passed=0
+declare -i total=0
+for day_bin in bin/*; do
+	day="$(basename "$day_bin")"
+	day_idx="$(($(echo "$day" | sed 's/^0//') - 1))"
+	echo -n "Day $day: "
+	for part in 1 2; do
+		answer="answers$part[$day_idx]"
+		if [[ "$(./"$day_bin" "$part" < input/"${day}.txt")" == "${!answer}" ]]; then
+			((++passed))
+			echo -n "P"
+		else
+			echo -n "F"
+		fi
+		((++total))
+	done
+	echo
+done
+
+echo "Passed $passed/$total"
+[[ "$passed" -eq "$total" ]]
