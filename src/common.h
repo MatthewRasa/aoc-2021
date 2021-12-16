@@ -8,7 +8,7 @@
 #include <unordered_set>
 #include <vector>
 
-uint select_part(int argc, char *argv[]);
+extern uint select_part(int argc, char *argv[]);
 
 template<class T, class Iter>
 std::pair<T, T> two_sum(Iter begin, Iter end, T total) {
@@ -23,12 +23,12 @@ std::pair<T, T> two_sum(Iter begin, Iter end, T total) {
 }
 
 template<class T>
-std::enable_if_t<std::is_integral_v<T>, T> parse_char(char c) {
+std::enable_if_t<std::is_integral_v<T> && !std::is_same_v<T, char>, T> parse_char(char c) {
 	return c - '0';
 }
 
 template<class T>
-std::enable_if_t<!std::is_integral_v<T>, T> parse_char(char c) {
+std::enable_if_t<!std::is_integral_v<T> || std::is_same_v<T, char>, T> parse_char(char c) {
 	return static_cast<T>(c);
 }
 
@@ -63,7 +63,9 @@ std::vector<T> parse_input_line_comma_delim(const std::string &line) {
 	return vals;
 }
 
-std::vector<uint> read_input_uints();
+extern std::string read_input_string();
+
+extern std::vector<uint> read_input_uints();
 
 template<class T>
 std::vector<T> read_input_objs() {
@@ -82,10 +84,15 @@ std::vector<T> read_input(Conv &&conv) {
 }
 
 template<class T>
-std::vector<T> read_input_line_comma_delim() {
-	std::string line;
-	std::getline(std::cin, line);
-	return parse_input_line_comma_delim<T>(line);
+std::vector<T> read_input_line_no_delim() {
+	return parse_input_line_no_delim<T>(read_input_string());
 }
+
+template<class T>
+std::vector<T> read_input_line_comma_delim() {
+	return parse_input_line_comma_delim<T>(read_input_string());
+}
+
+extern void skip_input_line();
 
 #endif /* COMMON_H_ */

@@ -1,6 +1,7 @@
 #include "common.h"
-#include <iostream>
 #include <cstring>
+#include <iostream>
+#include <limits>
 
 uint select_part(int argc, char *argv[]) {
 	if (argc < 2) {
@@ -18,6 +19,16 @@ uint select_part(int argc, char *argv[]) {
 	}
 }
 
+extern std::string read_input_string() {
+	std::string line;
+	std::getline(std::cin, line);
+	return line;
+}
+
 std::vector<uint> read_input_uints() {
 	return read_input<uint>([](const auto &line) { return std::stoul(line); });
+}
+
+void skip_input_line() {
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
