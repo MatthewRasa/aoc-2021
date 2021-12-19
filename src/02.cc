@@ -78,6 +78,7 @@ int main(int argc, char *argv[]) {
 		std::tie(pos, depth) = final_position1(commands);
 		break;
 	case 2:
+	default:
 		std::tie(pos, depth) = final_position2(commands);
 		break;
 	}
